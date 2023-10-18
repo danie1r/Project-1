@@ -4,9 +4,15 @@ from sklearn.model_selection import train_test_split
 from preprocess import preprocess
 from sklearn.metrics import r2_score
 
-# f(x) = mx + b
-# m_new = m_old - alpha/n * -2x(y-(m_old*x + b_old))
-# b_new = b_old - alpha/n * -2(y - (m_old*x + b_old))
+# This function performs gradient descent and updates the weight parameters for each features. 
+# Input: 
+#   X - features matrix
+#   y - labels vector, or true output
+#   learning_rate - The hyperparameter learning rate for the gradient descent. 
+#   alpha - Hyperparameter for L2 regularization. Constant for the regularizer
+# Output:
+#   m - The resulting vector of weight parameters for each feature.
+#   b - The resulting bias parameter.
 def gradient_descent(x, y, learning_rate, alpha, max_iter):
     threshold = 0.0001
     m = np.random.randn(1)
@@ -27,7 +33,14 @@ def gradient_descent(x, y, learning_rate, alpha, max_iter):
         fx_old = fx_new
     return m,b
 
-
+# This function performs multivariate linear regression.The hyperparameters include learning_rate, regularizer constant.
+# It also specifies the maximum number of iterations of gradient descent to be repeated.
+# Input:
+#   X - features matrix
+#   y - vector of y-labels, true label
+# Output:
+#   m - The resulting vector of weight parameters for each feature.
+#   b - The resulting bias parameter.
 def linReg(X, y):
     
     num_features = len(X[0])
@@ -43,37 +56,44 @@ def linReg(X, y):
 
 X_train, X_test, y_train, y_test, rawX_train, rawX_test, rawY_train, rawY_test = preprocess()
 
+# Train univariate model on preprocessed training data.
 m,b = linReg(X_train, y_train)
 
-# univariate model on training data (preprocessed)
-# train_data_res_processed = []
-# for featureNum in range(8):
-#     y_pred = m[featureNum] * X_train[:,featureNum] + b[featureNum]
-#     varExplained = r2_score(y_train, y_pred)
-#     train_data_res_processed.append(varExplained)
-#     print(f"Var Explained: {varExplained}")
-#     plt.scatter(X_train[:,featureNum], y_train)
-#     plt.plot(X_train[:,featureNum], y_pred, 'r-')
-#     plt.show()
-# print(train_data_res_processed)
-# test_data_res_processed = []
-# for featureNum in range(8):
-#     y_pred = m[featureNum] * X_test[:,featureNum] + b[featureNum]
-#     varExplained = r2_score(y_test, y_pred)
-#     test_data_res_processed.append(varExplained)
-# print(test_data_res_processed)
+# univariate model on training data (preprocessed) and tested on training data (preprocessed)
+train_data_res_processed = []
+for featureNum in range(8):
+    y_pred = m[featureNum] * X_train[:,featureNum] + b[featureNum]
+    varExplained = r2_score(y_train, y_pred)
+    train_data_res_processed.append(varExplained)
+    print(f"Var Explained: {varExplained}")
+    plt.scatter(X_train[:,featureNum], y_train)
+    plt.plot(X_train[:,featureNum], y_pred, 'r-')
+    plt.show()
+print(train_data_res_processed)
 
-# m_raw, b_raw = linReg(rawX_train, rawY_train)
-# test_data_res_raw = []
-# for featureNum in range(8):
-#     y_pred = np.float64(m_raw[featureNum] * rawX_train[:,featureNum] + b_raw[featureNum])
-#     varExplained = r2_score(rawY_train, y_pred)
-#     test_data_res_raw.append(varExplained)
+# univariate model trained on training data (preprocessed) and tested on test data (preprocessed)
+test_data_res_processed = []
+for featureNum in range(8):
+    y_pred = m[featureNum] * X_test[:,featureNum] + b[featureNum]
+    varExplained = r2_score(y_test, y_pred)
+    test_data_res_processed.append(varExplained)
+print(test_data_res_processed)
 
-# print(test_data_res_raw)
-# for featureNum in range(8):
-#     y_pred = np.float64(m_raw[featureNum] * rawX_test[:,featureNum] + b_raw[featureNum])
-#     varExplained = r2_score(rawY_test, y_pred)
-#     test_data_res_raw.append(varExplained)
+# Train univariate model on raw training data
+m_raw, b_raw = linReg(rawX_train, rawY_train)
 
-# print(test_data_res_raw)
+# univariate model trained on training data (raw) and tested on training data (raw)
+test_data_res_raw = []
+for featureNum in range(8):
+    y_pred = np.float64(m_raw[featureNum] * rawX_train[:,featureNum] + b_raw[featureNum])
+    varExplained = r2_score(rawY_train, y_pred)
+    test_data_res_raw.append(varExplained)
+print(test_data_res_raw)
+
+# univariate model trained on training data (raw) and tested on test data(raw).
+for featureNum in range(8):
+    y_pred = np.float64(m_raw[featureNum] * rawX_test[:,featureNum] + b_raw[featureNum])
+    varExplained = r2_score(rawY_test, y_pred)
+    test_data_res_raw.append(varExplained)
+
+print(test_data_res_raw)
