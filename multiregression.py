@@ -52,6 +52,6 @@ X_train, X_test, y_train, y_test, rawX_train, rawX_test, rawY_train, rawY_test =
 
 m,b = linReg(rawX_train, rawY_train) # The params for linReg can be changed to train and test different sets of data points.
 m = m.reshape((-1, 1))
-y_pred = np.dot(rawX_train,m) + b
+y_pred = np.dot(rawX_train,m) + b # Computes the predicted y using trained model.
 varExplained = r2_score(rawY_train, y_pred) # uses r2_score from sklearn library to calculate VarExplained.
 print(varExplained)
