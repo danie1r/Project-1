@@ -50,6 +50,7 @@ def linReg(X, y):
 # This is the main function that runs linear regression and calculates the variance explained. 
 X_train, X_test, y_train, y_test, rawX_train, rawX_test, rawY_train, rawY_test = preprocess()
 
+
 m,b = linReg(rawX_train, rawY_train) # The params for linReg can be changed to train and test different sets of data points.
 m = m.reshape((-1, 1))
 y_pred = np.dot(rawX_train,m) + b # Computes the predicted y using trained model.

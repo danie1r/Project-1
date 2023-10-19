@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from preprocess import preprocess
 from sklearn.metrics import r2_score
+import seaborn as sns
 
 # This function performs gradient descent and updates the weight parameters for each features. 
 # Input: 
@@ -56,10 +57,11 @@ def linReg(X, y):
 
 X_train, X_test, y_train, y_test, rawX_train, rawX_test, rawY_train, rawY_test = preprocess()
 
+
 # Train univariate model on preprocessed training data.
 m,b = linReg(X_train, y_train)
 
-# univariate model on training data (preprocessed) and tested on training data (preprocessed)
+# # univariate model on training data (preprocessed) and tested on training data (preprocessed)
 train_data_res_processed = []
 for featureNum in range(8):
     y_pred = m[featureNum] * X_train[:,featureNum] + b[featureNum]
@@ -69,31 +71,31 @@ for featureNum in range(8):
     plt.scatter(X_train[:,featureNum], y_train)
     plt.plot(X_train[:,featureNum], y_pred, 'r-')
     plt.show()
-print(train_data_res_processed)
+print("VarE of Univariate model on train(preprocessed): " + train_data_res_processed)
 
-# univariate model trained on training data (preprocessed) and tested on test data (preprocessed)
+# # univariate model trained on training data (preprocessed) and tested on test data (preprocessed)
 test_data_res_processed = []
 for featureNum in range(8):
     y_pred = m[featureNum] * X_test[:,featureNum] + b[featureNum]
     varExplained = r2_score(y_test, y_pred)
     test_data_res_processed.append(varExplained)
-print(test_data_res_processed)
+print("VarE of Univariate model on test(preprocessed): " + test_data_res_processed)
 
-# Train univariate model on raw training data
+# # Train univariate model on raw training data
 m_raw, b_raw = linReg(rawX_train, rawY_train)
 
-# univariate model trained on training data (raw) and tested on training data (raw)
+# # univariate model trained on training data (raw) and tested on training data (raw)
 test_data_res_raw = []
 for featureNum in range(8):
     y_pred = np.float64(m_raw[featureNum] * rawX_train[:,featureNum] + b_raw[featureNum])
     varExplained = r2_score(rawY_train, y_pred)
     test_data_res_raw.append(varExplained)
-print(test_data_res_raw)
+print("VarE of Univariate model on train(raw): " + test_data_res_raw)
 
-# univariate model trained on training data (raw) and tested on test data(raw).
+# # univariate model trained on training data (raw) and tested on test data(raw).
 for featureNum in range(8):
     y_pred = np.float64(m_raw[featureNum] * rawX_test[:,featureNum] + b_raw[featureNum])
     varExplained = r2_score(rawY_test, y_pred)
     test_data_res_raw.append(varExplained)
 
-print(test_data_res_raw)
+print("VarE of Univariate model on test(raw): " + test_data_res_raw)
